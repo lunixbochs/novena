@@ -2,7 +2,6 @@ from flask import (
     Flask,
 )
 from flask.ext.pymongo import PyMongo
-from redis import Redis
 
 app = Flask('novena')
 app.config.update(

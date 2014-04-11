@@ -1,9 +1,5 @@
-from bs4 import BeautifulSoup
-from datetime import timedelta
 from flask import (
-    render_template,
     request,
-    Response,
 )
 import json
 
