@@ -1,9 +1,10 @@
 from datetime import datetime
 
+import json
 import pymongo
 import requests
-import traceback
 import time
+import traceback
 
 db = pymongo.Connection().novena
 username = 'lunixbochs'
@@ -15,11 +16,11 @@ def get_difficulty():
     except Exception:
         traceback.print_exc()
 
-def submit(content):
+def submit(contents):
     try:
-        response = requests.post('http://novena-puzzle.crowdsupply.com/submit', data={
-            'username': username, 'content': content,
-        })
+        response = requests.post('http://novena-puzzle.crowdsupply.com/submit', data=json.dumps({
+            'username': username, 'contents': contents,
+        }))
         if response.status_code == 502:
             return False
         return response.json()
@@ -32,9 +33,9 @@ while True:
     for i in xrange(30):
         hashes = list(db.hashes.find({'bits': {'$gte': difficulty}, 'submitted': {'$exists': False}}))
         for h in hashes:
-            print 'submitting: "{}":'.format(h['content']),
+            print 'submitting: "%s":' % h['contents'],
             try:
-                response = submit(h['content'])
+                response = submit(h['contents'])
                 db.hashes.update({'_id': h['_id']}, {'$set': {'response': response, 'submitted': True}})
                 print response
             except Exception:
