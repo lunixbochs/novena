@@ -14,5 +14,10 @@ def init():
 def submit():
     data = json.loads(request.environ['body_copy'])
     if not mongo.db.hashes.find_one({'contents': data['contents']}):
-        mongo.db.hashes.insert({'contents': data['contents'], 'bits': data['bits']})
+        doc = {
+            'contents': data['contents'],
+            'bits': data['bits'],
+            'ip': request.remote_addr,
+        }
+        mongo.db.hashes.insert(doc)
     return ''
