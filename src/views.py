@@ -17,7 +17,7 @@ def init():
 def index():
     ip = request.args.get('ip', request.remote_addr)
     counts = {}
-    for i in xrange(96, 106):
+    for i in xrange(98, 108):
         hashcount = mongo.db.hashes.find({'ip': ip, 'bits': i}).count()
         if hashcount:
             counts[i] = hashcount
