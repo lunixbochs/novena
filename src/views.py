@@ -12,9 +12,11 @@ from app import app, mongo
 @app.before_first_request
 def init():
     mongo.db.hashes.ensure_index([('bits', 1)])
+    mongo.db.hashes.ensure_index([('contents', 1)])
 
 @app.route('/submit', methods=['POST'])
 def submit():
     data = json.loads(request.environ['body_copy'])
-    mongo.db.hashes.insert({'contents': data['contents'], 'bits': data['bits']})
+    if not mongo.db.hashes.findOne({'contents': data['contents']}):
+        mongo.db.hashes.insert({'contents': data['contents'], 'bits': data['bits']})
     return ''
