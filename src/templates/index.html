@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        {% if counts %}
+        <table>
+        <tr>
+            <th>Bits</th>
+            <th>Num</th>
+        </tr>
+        {% for bits, count in counts.items() %}
+        <tr>
+            <td>{{ bits }}</td>
+            <td>{{ count }}</td>
+        </tr>
+        {% endfor %}
+        </table>
+        {% endif %}
+    </body>
+</html>

@@ -1,4 +1,7 @@
+from collections import defaultdict
+
 from flask import (
+    render_template,
     request,
 )
 import json
@@ -9,6 +12,16 @@ from app import app, mongo
 def init():
     mongo.db.hashes.ensure_index([('bits', 1)])
     mongo.db.hashes.ensure_index([('contents', 1)])
+
+@app.route('/')
+def index():
+    ip = request.remote_addr
+    counts = {}
+    for i in xrange(96, 106):
+        hashcount = mongo.db.hashes.find({'ip': ip, 'bits': i}).count()
+        if hashcount:
+            counts[i] = hashcount
+    return render_template('index.html', counts=counts)
 
 @app.route('/submit', methods=['POST'])
 def submit():
