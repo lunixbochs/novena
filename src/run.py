@@ -11,4 +11,4 @@ if __name__ == '__main__':
         port = int(sys.argv[1])
 
     app.app.root_path = os.path.dirname(app.__file__)
-    app.app.run(port=port, threaded=True, use_reloader=True)
+    app.app.run(host='0.0.0.0', port=port, threaded=True, use_reloader=True)
