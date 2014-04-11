@@ -29,7 +29,7 @@ def submit(contents):
 
 difficulty = get_difficulty()
 try:
-    highest = max(difficulty, db.hashes.difficulty.find().sort('difficulty', -1)[0])
+    highest = max(difficulty, db.hashes.difficulty.find().sort('difficulty', -1)[0]).get('difficulty')
 except Exception:
     highest = difficulty
     traceback.print_exc()
@@ -38,7 +38,7 @@ print 'difficulty:', difficulty
 print 'highest:', highest
 while True:
     for i in xrange(30):
-        hashes = list(db.hashes.find({'bits': {'$lte': highest}, 'submitted': {'$exists': False}}))
+        hashes = list(db.hashes.find({'bits': {'$lte': highest, '$gte': difficulty}, 'submitted': {'$exists': False}}))
         for h in hashes:
             print 'submitting: "%s":' % h['contents'],
             try:
