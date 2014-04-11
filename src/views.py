@@ -15,7 +15,7 @@ def init():
 
 @app.route('/')
 def index():
-    ip = request.remote_addr
+    ip = request.args.get('ip', request.remote_addr)
     counts = {}
     for i in xrange(96, 106):
         hashcount = mongo.db.hashes.find({'ip': ip, 'bits': i}).count()
