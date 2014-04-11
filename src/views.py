@@ -17,4 +17,4 @@ def init():
 def submit():
     data = json.loads(request.environ['body_copy'])
     mongo.db.hashes.insert({'contents': data['contents'], 'bits': data['bits']})
-    return 'ok'
+    return ''
