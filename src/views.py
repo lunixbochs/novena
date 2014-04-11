@@ -13,6 +13,6 @@ def init():
 @app.route('/submit', methods=['POST'])
 def submit():
     data = json.loads(request.environ['body_copy'])
-    if not mongo.db.hashes.findOne({'contents': data['contents']}):
+    if not mongo.db.hashes.find_one({'contents': data['contents']}):
         mongo.db.hashes.insert({'contents': data['contents'], 'bits': data['bits']})
     return ''
