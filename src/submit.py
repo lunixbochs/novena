@@ -20,16 +20,19 @@ def get_difficulty():
         traceback.print_exc()
 
 @pool
-def submit(contents):
+def submit(h):
     try:
         response = requests.post('http://novena-puzzle.crowdsupply.com/submit', data=json.dumps({
-            'username': username, 'contents': contents,
+            'username': username, 'contents': h['contents'],
         }))
         if response.status_code == 502:
-            return False
-        return response.json()
+            response = False
+        else:
+            response = response.json()
     except Exception:
         traceback.print_exc()
+        response = None
+    db.hashes.update({'_id': h['_id']}, {'$set': {'response': response, 'submitted': True}})
 
 difficulty = get_difficulty()
 try:
@@ -46,7 +49,7 @@ while True:
         for h in hashes:
             print 'submitting: "%s":' % h['contents'],
             try:
-                response = submit(h['contents'])
+                response = submit(h)
                 db.hashes.update({'_id': h['_id']}, {'$set': {'response': response, 'submitted': True}})
                 print response
             except Exception:
