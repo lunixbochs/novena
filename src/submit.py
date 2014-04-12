@@ -1,10 +1,13 @@
 from datetime import datetime
+from threadpool import ThreadPool
 
 import json
 import pymongo
 import requests
 import time
 import traceback
+
+pool = ThreadPool(5)
 
 db = pymongo.Connection().novena
 username = 'lunixbochs'
@@ -16,6 +19,7 @@ def get_difficulty():
     except Exception:
         traceback.print_exc()
 
+@pool
 def submit(contents):
     try:
         response = requests.post('http://novena-puzzle.crowdsupply.com/submit', data=json.dumps({
