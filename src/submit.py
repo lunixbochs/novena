@@ -57,7 +57,8 @@ while True:
         time.sleep(1)
     new_diff = get_difficulty()
     if new_diff != difficulty:
-        print 'difficulty changed:', new_diff
-        print 'highest difficulty:', max(new_diff, difficulty)
+        highest = max(new_diff, difficulty)
         difficulty = new_diff
+        print 'difficulty changed:', new_diff
+        print 'highest difficulty:', highest
         db.hashes.difficulty.insert({'time': datetime.now(), 'difficulty': difficulty})
