@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 from flask import (
     render_template,
     request,
@@ -12,12 +10,14 @@ from app import app, mongo
 def init():
     mongo.db.hashes.ensure_index([('bits', 1)])
     mongo.db.hashes.ensure_index([('contents', 1)])
+    mongo.db.hashes.ensure_index([('ip', 1), ('bits', 1)])
 
 @app.route('/')
 def index():
     ip = request.args.get('ip', request.remote_addr)
     counts = {}
-    for i in xrange(98, 108):
+    bits = mongo.db.hashes.find({'ip': ip}).distinct('bits')
+    for i in bits:
         hashcount = mongo.db.hashes.find({'ip': ip, 'bits': i}).count()
         if hashcount:
             counts[i] = hashcount
