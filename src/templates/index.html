@@ -9,7 +9,7 @@
             <th>Bits</th>
             <th>Num</th>
         </tr>
-        {% for bits, count in counts.items() %}
+        {% for bits, count in counts.items()|sort %}
         <tr>
             <td>{{ bits }}</td>
             <td>{{ count }}</td>
