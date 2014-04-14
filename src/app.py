@@ -5,7 +5,7 @@ from flask.ext.pymongo import PyMongo
 
 app = Flask('novena')
 app.config.update(
-    DEBUG = True,
+    DEBUG = False,
     MONGO_AUTO_START_REQUEST = False,
     SECRET_KEY = 'cj7aX1teTTgGRYyxTagIxLrW',
 )
